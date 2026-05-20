@@ -1,0 +1,140 @@
+ nmap -sn 192.168.20.0/24
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-05-19 18:32 +0000
+Nmap scan report for 192.168.20.1
+Host is up (0.00018s latency).
+MAC Address: 8E:81:42:8F:6E:35 (Unknown)
+Nmap scan report for sclab-s1-proxy.sclab_labnet (192.168.20.47)
+Host is up (0.000024s latency).
+MAC Address: E2:CC:02:09:10:5A (Unknown)
+Nmap scan report for sclab-s2-proxy.sclab_labnet (192.168.20.113)
+Host is up (0.000048s latency).
+MAC Address: 06:58:F2:51:1F:5F (Unknown)
+Nmap scan report for sclab-s3-proxy.sclab_labnet (192.168.20.178)
+Host is up (0.000062s latency).
+MAC Address: 4E:21:A7:C1:10:86 (Unknown)
+Nmap scan report for kali (192.168.20.3)
+Host is up.
+Nmap done: 256 IP addresses (5 hosts up) scanned in 2.96 seconds
+
+student@kali:~$ nmap -p- ^C
+
+student@kali:~$ nmap -p- 192.168.20.47
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-05-19 18:34 +0000
+Nmap scan report for sclab-s1-proxy.sclab_labnet (192.168.20.47)
+Host is up (0.000012s latency).
+Not shown: 65534 closed tcp ports (reset)
+PORT      STATE SERVICE
+30058/tcp open  unknown
+MAC Address: E2:CC:02:09:10:5A (Unknown)
+
+Nmap done: 1 IP address (1 host up) scanned in 2.16 seconds
+
+
+
+
+
+
+
+
+
+
+
+(base) deeps@PC:/mnt/c/Users/Thota$ cd Downloads/
+(base) deeps@PC:/mnt/c/Users/Thota/Downloads$ chmod +x scenariolauncher+
+chmod: cannot access 'scenariolauncher+': No such file or directory
+(base) deeps@PC:/mnt/c/Users/Thota/Downloads$ chmod +x scenariolauncher
+(base) deeps@PC:/mnt/c/Users/Thota/Downloads$ ./scenariolauncher init
+
+Powered by DarkRelay Security Labs — https://darkrelay.com
+
+[2026-05-19 17:39:09] [INFO] Running pre-checks...
+[2026-05-19 17:39:14] [INFO] Pre-checks OK.
+
+Optional local image mirror (leave host empty to use ghcr.io directly).
+Registry host or IP [empty = ghcr.io]:
+[2026-05-19 17:39:16] [INFO] Using ghcr.io images.
+[2026-05-19 17:39:16] [INFO] Writing compose file...
+[2026-05-19 17:39:16] [INFO] Init complete. Run: ./scenariolauncher start
+(base) deeps@PC:/mnt/c/Users/Thota/Downloads$ ./scenariolauncher start
+
+
+
+
+
+
+
+
+
+[00:55, 20/5/2026] Deepika: juice shop
+[00:56, 20/5/2026] Deepika: 1st scoreboard
+2nd nd 3rd paste that in search bar
+[00:57, 20/5/2026] Deepika: 4th 
+Steps:
+
+Login to Juice Shop with any user account (e.g., the default admin@juice-sh.op or any regular user).
+Go to Track Order page:
+Click on your Account (top right) → Orders & Payment → Track Orders
+
+Place a test order (if you don’t have any orders yet):
+Add any product to the basket → Checkout → Place Order.
+
+Get the Track Order link:
+Go back to Track Orders.
+Click on any order → It will open a URL like this:
+http://192.168.20.47:3000/#/track-result?id=XXXXXXXX
+
+Inject the payload in the id parameter:
+Replace the value of id= with the encoded payload.
+Encoded Payload (copy this):text<iframe%20src%3D"javascript:alert(%60xss%60)">
+Full URL example:texthttp://192.168.20.47:3000/#/track-result?id=<iframe%20src%3D"javascript:alert(%60xss%60)">
+Press Enter.
+
+You should see an alert box saying xss and the challenge will be marked as solved.
+[00:57, 20/5/2026] Deepika: else just paste -> http://192.168.20.47:3000/#/track-result?id=<iframe%20src%3D"javascript:alert(%60xss%60)">
+with ur port no
+[00:58, 20/5/2026] Deepika: 5th login admin
+Steps:
+
+Go to the Login page.
+In the Email field, enter exactly this:textadmin@juice-sh.op'--
+In the Password field, enter anything (e.g. 123).
+Click Log in.
+[00:58, 20/5/2026] Deepika: 6th login mc safesearch
+Steps:
+
+Go to the Login page (top right → Account → Login).
+Enter the following credentials:
+Email: mc.safesearch@juice-sh.op
+Password: Mr. N00dles
+
+Click Log in.
+[00:59, 20/5/2026] Deepika: 7th one login JIM 
+Go to the Login page (top right → Account → Login).
+In the Email field, enter this payload:textjim@juice-sh.op'--
+In the Password field, enter anything (e.g. 123 or leave it blank).
+Click Log in.
+[01:00, 20/5/2026] Deepika: 8th one login bender
+Go to the Login page (top right → Account → Login).
+In the Email field, enter exactly this:textbender@juice-sh.op'--
+In the Password field, enter anything (e.g. 123 or leave blank).
+Click Log in.
+[01:22, 20/5/2026] Deepika: 9th 
+Login to Juice Shop with any account.
+Open Developer Tools (F12) → Go to Network tab → Refresh the page.
+Get your Authorization Token:
+Click on any request with 200 status (preferably /api/Products).
+Go to Headers → Request Headers.
+Copy the long string after Authorization: Bearer .
+
+Run this command in Terminal (with correct port 30058):
+
+Bashcurl -X PUT "http://192.168.20.47:30058/api/Products/5" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -d '{"description":"<iframe src=\"javascript:alert(xss)\">"}'
+
+Refresh the main shop page in the browser.
+You should see the alert box xss pop up → Challenge Solved!
+
+
+
